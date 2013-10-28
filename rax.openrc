@@ -1,0 +1,13 @@
+export OS_VERSION=2.0
+export OS_AUTH_URL=https://identity.api.rackspacecloud.com/v2.0/
+export OS_AUTH_SYSTEM=rackspace
+export OS_REGION_NAME=IAD
+export OS_USERNAME=<your username>
+export OS_TENANT_NAME=<your account number>
+export OS_PASSWORD=<your API key>
+export OS_PROJECT_ID=<your account number>
+export OS_NO_CACHE=1
+
+export ST_AUTH=https://auth.api.rackspacecloud.com/v1.0
+export ST_USER=$OS_USERNAME
+export ST_KEY=$OS_PASSWORD
