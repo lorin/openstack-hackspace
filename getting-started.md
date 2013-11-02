@@ -20,9 +20,9 @@ You should have a Rackspace username and password. You'll be using these to acce
 
 Install the OpenStack command-line tools on your local machine. It's best to install this within a Python virtualenv.
 
-    virtualenv openstack
-    source openstack/bin/activate
-    pip install rackspace-novaclient python-glanceclient python-cinderclient python-neutronclient python-swiftclient python-keystoneclient
+    $ virtualenv openstack
+    $ source openstack/bin/activate
+    $ pip install rackspace-novaclient python-glanceclient python-cinderclient python-neutronclient python-swiftclient python-keystoneclient
 
 
 ### Create a valid openrc file for
@@ -60,8 +60,8 @@ And the entire rax.openrc file should now look like:
 
 Make sure it's working by trying to list available images on Rackspace:
 
-    source rax.openrc
-    nova image-list
+    $ source rax.openrc
+    $ nova image-list
 
 The output should look something like this:
 
