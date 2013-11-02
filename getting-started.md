@@ -29,6 +29,7 @@ Install the OpenStack command-line tools on your local machine. It's best to ins
 
 
 Download the linked [rax.openrc] file, and fill in your username, account number, and API key. For example, if your had:
+
  * username `jane.doe`
  * account number `12345`
  * API key `1c3cdf47937c40faa9f7a8ba5efa5560`
