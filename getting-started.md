@@ -57,51 +57,46 @@ And the entire rax.openrc file should now look like:
     export ST_USER=$OS_USERNAME
     export ST_KEY=$OS_PASSWORD
 
+### Confirm compute client is working
 
-Make sure it's working by trying to list available images on Rackspace:
+Make sure the OpenStack Compute client (nova) is working by trying to list available images on Rackspace:
 
     $ source rax.openrc
-    $ nova image-list
+    $ nova flavor-list
 
 The output should look something like this:
 
+	+----+-------------------------+-----------+------+-----------+------+-------+-------------+-----------+
+	| ID | Name                    | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |
+	+----+-------------------------+-----------+------+-----------+------+-------+-------------+-----------+
+	| 2  | 512MB Standard Instance | 512       | 20   | 0         | 512  | 1     | 80.0        | N/A       |
+	| 3  | 1GB Standard Instance   | 1024      | 40   | 0         | 1024 | 1     | 120.0       | N/A       |
+	| 4  | 2GB Standard Instance   | 2048      | 80   | 0         | 2048 | 2     | 240.0       | N/A       |
+	| 5  | 4GB Standard Instance   | 4096      | 160  | 0         | 2048 | 2     | 400.0       | N/A       |
+	| 6  | 8GB Standard Instance   | 8192      | 320  | 0         | 2048 | 4     | 600.0       | N/A       |
+	| 7  | 15GB Standard Instance  | 15360     | 620  | 0         | 2048 | 6     | 800.0       | N/A       |
+	| 8  | 30GB Standard Instance  | 30720     | 1200 | 0         | 2048 | 8     | 1200.0      | N/A       |
+	+----+-------------------------+-----------+------+-----------+------+-------+-------------+-----------+
 
-    +--------------------------------------+----------------------------------------------------------------------------------------------+--------+--------+
-    | ID                                   | Name                                                                                         | Status | Server |
-    +--------------------------------------+----------------------------------------------------------------------------------------------+--------+--------+
-    | a05d3902-4fd8-4c7f-92a9-f985fe299deb | Arch 2013.9                                                                                  | ACTIVE |        |
-    | f613b402-ebbf-49fe-a780-101a75c03704 | CentOS 5.9                                                                                   | ACTIVE |        |
-    | 25a5f2e8-f522-4fe0-b0e0-dbaa62405c25 | CentOS 6.4                                                                                   | ACTIVE |        |
-    | 6bcf33fb-1ed1-44f5-a867-3ee777a590a8 | Debian 6.06 (Squeeze)                                                                        | ACTIVE |        |
-    | f45b4de7-6013-4eb9-8df4-133b913ffb40 | Debian 7 (Wheezy)                                                                            | ACTIVE |        |
-    | b37fd1ad-6811-4714-941f-17a522b59af4 | Fedora 18 (Spherical Cow)                                                                    | ACTIVE |        |
-    | 6fa6747b-764b-4045-b3b2-0c26cb6c4347 | Fedora 19 (Schrodinger's Cat)                                                                | ACTIVE |        |
-    | 78a41fcc-de90-428a-a79d-63ecb60cfe58 | FreeBSD 9.1                                                                                  | ACTIVE |        |
-    | b09b6acf-598d-48e2-8f24-f06babf5488f | Gentoo 13.3                                                                                  | ACTIVE |        |
-    | 1dac45f6-2f61-4011-8c76-1cfb945ad2f0 | OpenSUSE 12.3                                                                                | ACTIVE |        |
-    | da3a46dc-ea96-44bb-8f6b-37d65f1d4e23 | Red Hat Enterprise Linux 5.9                                                                 | ACTIVE |        |
-    | e0c3a14d-b1dc-451b-ade4-d419501aa121 | Red Hat Enterprise Linux 6.4                                                                 | ACTIVE |        |
-    | 6d8cbbf0-2a2d-4db8-8f74-fd1f7a04e7ce | Scientific Linux 6.4                                                                         | ACTIVE |        |
-    | 8367d213-8c25-4fa1-927c-e9c34543e51f | Ubuntu 10.04 LTS (Lucid Lynx)                                                                | ACTIVE |        |
-    | 25de7af5-1668-46fb-bd08-9974b63a4806 | Ubuntu 12.04 LTS (Precise Pangolin)                                                          | ACTIVE |        |
-    | c6f9c411-e708-4952-91e5-62ded5ea4d3e | Ubuntu 12.10 (Quantal Quetzal)                                                               | ACTIVE |        |
-    | 592181b4-4153-4198-b65c-0c76b2d335c5 | Ubuntu 13.04 (Raring Ringtail)                                                               | ACTIVE |        |
-    | ff228647-fd57-47fe-b42d-2b7813bb9115 | Ubuntu 13.10 (Saucy Salamander)                                                              | ACTIVE |        |
-    | 59b394f6-b2e0-4f11-b7d1-7fea4abc60a0 | Vyatta Network OS 6.5R2                                                                      | ACTIVE |        |
-    | b349843c-22e6-48c9-8932-d282bd69fc90 | Windows Server 2008 R2 SP1                                                                   | ACTIVE |        |
-    | 7462c004-59cb-403c-9a8d-823ce978a00c | Windows Server 2008 R2 SP1 (base install without updates)                                    | ACTIVE |        |
-    | b640fa31-d590-4058-b90a-db98d36ec0c8 | Windows Server 2008 R2 SP1 + SQL Server 2008 R2 SP2 Standard                                 | ACTIVE |        |
-    | b4a0aee1-a218-455f-8c7a-ecef527d43c4 | Windows Server 2008 R2 SP1 + SQL Server 2008 R2 SP2 Web                                      | ACTIVE |        |
-    | fa12f54c-259a-4128-a682-2f8be01520d7 | Windows Server 2008 R2 SP1 + SQL Server 2012 SP1 Standard                                    | ACTIVE |        |
-    | 2844cc38-83a0-4e86-b737-eac73c26198b | Windows Server 2008 R2 SP1 + SQL Server 2012 SP1 Web                                         | ACTIVE |        |
-    | 0487cb15-9832-4fb7-b2d9-5fc8f55803ad | Windows Server 2008 R2 SP1 + SharePoint 2010 Foundation with SQL Server 2008 R2 Express      | ACTIVE |        |
-    | fa14596a-1a70-42d0-bf20-699c35439356 | Windows Server 2008 R2 SP1 + SharePoint 2010 Foundation with SQL Server 2008 R2 SP1 Standard | ACTIVE |        |
-    | 332bdd7a-5eed-47da-bbde-d62c8cfdbc23 | Windows Server 2012                                                                          | ACTIVE |        |
-    | 68c3112f-bbef-4a17-9b4c-fb7f7444376f | Windows Server 2012 (base install without updates)                                           | ACTIVE |        |
-    | 551158b3-96cc-4d34-a41a-3b7e0bd0ffd7 | Windows Server 2012 + SQL Server 2012 SP1 Standard                                           | ACTIVE |        |
-    | 2e582334-117e-492d-b48c-2d2d1e90267b | Windows Server 2012 + SQL Server 2012 SP1 Web                                                | ACTIVE |        |
-    | 639ec81b-35ac-4346-a275-4f31f7bb9504 | Windows Server 2012 + SharePoint 2013 with SQL Server 2012 SP1 Standard                      | ACTIVE |        |
-    +--------------------------------------+----------------------------------------------------------------------------------------------+--------+--------+
+### Confirm object storage client is working
+
+Make srue the OpenStack Object Storage client (swift) is working by checking the status of your object storage account:
+
+    $ source rax.openrc
+    $ swift stat
+    
+The output should look something like this:
+
+
+	   Account: MossoCloudFS_4911155b-32a5-317a-d0ef-6db8f4887013
+	Containers: 0
+	   Objects: 0
+	     Bytes: 0
+	Content-Type: text/plain; charset=utf-8
+	X-Timestamp: 1383359439.45298
+	X-Trans-Id: txf8f114e6ecac49db9c5e0-00527463cfiad3
+	X-Put-Timestamp: 1383359439.45298
+
 
 
 [rax.openrc]: https://github.com/lorin/openstack-hackspace/blob/master/rax.openrc
