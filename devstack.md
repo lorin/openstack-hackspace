@@ -46,9 +46,9 @@ The "progress" field will tell you the % complete. When the status reaches
 
 ## SSH into the instance
 
-If the IP address is 162.209.100.22, ssh by doing:
+If the IP address is 162.209.96.154, ssh by doing:
 
-    $ ssh -i lisa.key root@162.209.100.22
+    $ ssh -i lisa.key root@162.209.96.154
 
 ## Install git
 
@@ -82,7 +82,7 @@ Output should be:
 
 ## Check out devstack as stack user
 
-    git clone https://github.com/openstack-dev/devstack.git -b stable/havana
+    $ git clone https://github.com/openstack-dev/devstack.git -b stable/havana
 
 
 ## Create /opt/stack/devstack/local.conf
@@ -94,18 +94,10 @@ Note: You must change `HOST_IP` to match your actual public IP.
 
 
     [[local|localrc]]
-    # Default passwords
-    ADMIN_PASSWORD=password
-    MYSQL_PASSWORD=password
-    RABBIT_PASSWORD=password
-    SERVICE_PASSWORD=password
-    SERVICE_TOKEN=password
-
+    # CHANGE ME TO MATCH PUBLIC IP
+    HOST_IP=162.209.96.154
 
     SCREEN_LOGDIR=/opt/stack/logs
-
-
-    HOST_IP=162.209.100.22
 
     # Enable Neutron
     disable_service n-net
@@ -133,8 +125,9 @@ Note: You must change `HOST_IP` to match your actual public IP.
 
     $ cd ~/devstack
     $ ./stack.sh
-    
-When it asks for a random swift hash, hit enter.
 
-It will then proceed to install OpenStack on the single node. This will take a while.
+Hit enter each time it asks you a question.
+
+It will then proceed to install OpenStack on the single node. This will take
+about ten minutes.
 
