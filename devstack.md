@@ -5,9 +5,9 @@ deo a DevStack deployment of the Havana release of OpenStack.
 
 ## Launch an instance on Rackspace
 
-We'll use an 8GB standard instance on Ubuntu 13.10:
+We'll use an 8GB standard instance on Ubuntu 12.04:
 
-    $ nova boot --flavor 6 --image 868a0966-0553-42fe-b8b3-5cadc0e0b3c5 --key-name lisa devstack
+    $ nova boot --flavor 6 --image c3153cde-2d23-4186-b7da-159adbe2858b --key-name lisa devstack
 
 Output should look like:
 
@@ -18,7 +18,7 @@ Output should look like:
     | updated                | 2013-11-04T04:15:56Z                 |
     | OS-EXT-STS:task_state  | scheduling                           |
     | key_name               | lisa                                 |
-    | image                  | Ubuntu 13.10 (Saucy Salamander)      |
+    | image                  | Ubuntu 12.04 LTS (Precise Pangolin)  |
     | hostId                 |                                      |
     | OS-EXT-STS:vm_state    | building                             |
     | flavor                 | 8GB Standard Instance                |
@@ -141,29 +141,6 @@ about twelve minutes. The output should look like this:
 
 The password is also set as `ADMIN_PASSWORD` in the localrc file
 
-
-## Fix the Dashboard
-
-There is a [bug] that prevents the OpenStack Dashboard from working properly.
-
-To work around it, as root, edit `/etc/apache2/sites-enabled/horizon.conf`.
-In the `<Directory />` entry, the missing line:
-
-   Required all granted
-
-The entry should look like this:
-
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-        Require all granted
-    </Directory>
-
-Then, restart apache:
-
-     $ sudo service apache2 restart
-
-[bug]: https://bugs.launchpad.net/devstack/+bug/1243075
 
 You should now be able to access the dashboard by pointing your web browser
 at the public IP of your instance.
