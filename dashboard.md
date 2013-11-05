@@ -29,7 +29,6 @@ and ping (icmp) traffic.
 1. Click "Add Rule"
 
 1. Fill in the following fields:
-
    * Rule: Custom TCP Rule
    * Direction: Ingress
    * Open Port: Port
@@ -42,7 +41,6 @@ and ping (icmp) traffic.
 1. Click "Add Rule"
 
 1. Fill in the following fields
-
   * Rule: ALL ICMP
   * Direction: Ingress
   * Remote: CIDR
