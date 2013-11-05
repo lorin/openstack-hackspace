@@ -21,9 +21,11 @@ Talk to somebody in the room if you don't have these.
  * [Getting started][1]
  * [Booting an instance][2]
  * [Object storage][3]
- * [Under the hood][4]
+ * [DevStack][4]
+ * [Dashboard][5]
 
  [1]: getting-started.md
  [2]: boot-instance.md
  [3]: object-storage.md
- [4]: under-the-hood.md
+ [4]: devstack.md
+ [5]: dashboard.md
