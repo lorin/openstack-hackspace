@@ -19,9 +19,8 @@ and ping (icmp) traffic.
 1. Click "Create Security Group"
 
 1. Fill in the following fields:
-
-  * Name: ssh
-  * Description: allow ssh and ping
+   * Name: ssh
+   * Description: allow ssh and ping
 
 1. Click "Create Security Group"
 
@@ -31,12 +30,12 @@ and ping (icmp) traffic.
 
 1. Fill in the following fields:
 
-  * Rule: Custom TCP Rule
-  * Direction: Ingress
-  * Open Port: Port
-  * Port: 22
-  * Remote: CDIR
-  * CIDR: 0.0.0.0/0
+   * Rule: Custom TCP Rule
+   * Direction: Ingress
+   * Open Port: Port
+   * Port: 22
+   * Remote: CDIR
+   * CIDR: 0.0.0.0/0
 
 1. Click "Add"
 
@@ -60,12 +59,12 @@ Make sure the CURRENT project is on "demo".
 
 1. Click the "Instances" link on the left, and click "Launch instance" at the top-right
 
-    * Availability Zone: nova
-    * Instance Name: test
-    * Flavor: m1.tiny
-    * Instance Count: 1
-    * Instance Boot Source: Boot from image.
-    * Image Name: cirros-0.3.1-x86_64-uec (24.0 MB)
+   * Availability Zone: nova
+   * Instance Name: test
+   * Flavor: m1.tiny
+   * Instance Count: 1
+   * Instance Boot Source: Boot from image.
+   * Image Name: cirros-0.3.1-x86_64-uec (24.0 MB)
 
     ![launch instance](launch-instance.png)
 
