@@ -20,8 +20,8 @@ and ping (icmp) traffic.
 
 1. Fill in the following fields:
 
-    * Name: ssh
-    * Description: allow ssh and ping
+  * Name: ssh
+  * Description: allow ssh and ping
 
 1. Click "Create Security Group"
 
@@ -31,12 +31,12 @@ and ping (icmp) traffic.
 
 1. Fill in the following fields:
 
-    * Rule: Custom TCP Rule
-    * Direction: Ingress
-    * Open Port: Port
-    * Port: 22
-    * Remote: CDIR
-    * CIDR: 0.0.0.0/0
+  * Rule: Custom TCP Rule
+  * Direction: Ingress
+  * Open Port: Port
+  * Port: 22
+  * Remote: CDIR
+  * CIDR: 0.0.0.0/0
 
 1. Click "Add"
 
@@ -44,10 +44,10 @@ and ping (icmp) traffic.
 
 1. Fill in the following fields
 
- * Rule: ALL ICMP
- * Direction: Ingress
- * Remote: CIDR
- * CIDR: 0.0.0.0/0
+  * Rule: ALL ICMP
+  * Direction: Ingress
+  * Remote: CIDR
+  * CIDR: 0.0.0.0/0
 
 1. Click "Add"
 
