@@ -106,36 +106,3 @@ The URL should look something like:
 This special url can be used to read the file until the expiry date.
 
 
-## Make a container readable by all
-
-Set the metadata on the hackspace container such that anybody can access the contents. Before:
-
-	$ curl -i -X HEAD https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png
-	HTTP/1.1 401 Unauthorized
-	Content-Type: text/html; charset=UTF-8
-	Content-Length: 0
-	X-Trans-Id: txa44484f152424b21b013c-00527479afiad3
-	Date: Sat, 02 Nov 2013 04:03:59 GMT
-
-Setting the access control list to allow read access and container listing from any referrer:
-
-    $ swift post hackspace --read-acl '.r:*'
-
-Verify it's been set:
-
-	$ swift stat hackspace
-	  Account: MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013
-	Container: hackspace
-	  Objects: 1
-	    Bytes: 6685
-	 Read ACL: .r:*
-	Write ACL:
-	  Sync To:
-	 Sync Key:
-	Accept-Ranges: bytes
-	X-Timestamp: 1383359834.10868
-	X-Trans-Id: tx12ab73e20369465fbc17f-00527479cbiad3
-	Content-Type: text/plain; charset=utf-8
-
-
-Now users should be able to access the url: https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png
