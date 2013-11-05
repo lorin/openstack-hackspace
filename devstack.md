@@ -1,7 +1,10 @@
 # DevStack
 
-DevStack is an all-in-one OpenStack deployment. In this exercise, we'll
-deo a DevStack deployment of the Havana release of OpenStack.
+DevStack is a single-node OpenStack deployment intended for development use.
+In this exercise, we'll do a DevStack deployment of the Havana release of
+OpenStack.
+
+We'll be using this DevStack deployment for the additional exercises as well.
 
 ## Launch an instance on Rackspace
 
@@ -55,13 +58,13 @@ If the IP address is 162.209.96.154, ssh by doing:
 Once inside the instance, update the apt cache and install git:
 
     # apt-get update
-    # apt-get install git
+    # apt-get install -y git
 
 ## Grab DevStack
 
 Grab DevStack and switch to the stable/havana branch:
 
-    git clone https://github.com/openstack-dev/devstack.git -b stable/havana
+    # git clone https://github.com/openstack-dev/devstack.git -b stable/havana
 
 ## Create a "stack" user
 
@@ -87,49 +90,44 @@ Output should be:
 
 ## Create /opt/stack/devstack/local.conf
 
-Create `/opt/stack/devstack/local.conf` with the following contents.
-
-Note: You must change `HOST_IP` to match your actual public IP.
+Create `/opt/stack/devstack/local.conf` with the following contents:
 
 
+```
+[[local|localrc]]
+SCREEN_LOGDIR=/opt/stack/logs
 
-    [[local|localrc]]
-    # CHANGE ME TO MATCH PUBLIC IP
-    HOST_IP=162.209.96.154
+# Enable Neutron
+disable_service n-net
+enable_service q-svc
+enable_service q-agt
+enable_service q-dhcp
+enable_service q-l3
+enable_service q-meta
+enable_service neutron
 
-    SCREEN_LOGDIR=/opt/stack/logs
+# Enable Swift
+enable_service s-proxy
+enable_service s-object
+enable_service s-container
+enable_service s-account
 
-    # Enable Neutron
-    disable_service n-net
-    enable_service q-svc
-    enable_service q-agt
-    enable_service q-dhcp
-    enable_service q-l3
-    enable_service q-meta
-    enable_service neutron
+# Disable tempest
+disable_service tempest
+```
 
-    # Enable Swift
-    enable_service s-proxy
-    enable_service s-object
-    enable_service s-container
-    enable_service s-account
-
-    # Disable security groups entirely
-    Q_USE_SECGROUP=False
-    LIBVIRT_FIREWALL_DRIVER=nova.virt.firewall.NoopFirewallDriver
-
-    # Disable tempest
-    disable_service tempest
 
 ## Run stack.sh as stack user
 
     $ cd ~/devstack
     $ ./stack.sh
 
-Hit enter each time it asks you a question.
+Hit enter each time it asks you a question about specifying a password to
+tell DevStack to just generate passwords randomly.
 
 It will then proceed to install OpenStack on the single node. This will take
-about twelve minutes. The output should look like this:
+about twelve minutes. The output should look like this, with a different
+IP address.
 
     Horizon is now available at http://162.209.96.154/
     Keystone is serving at http://162.209.96.154:5000/v2.0/
