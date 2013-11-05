@@ -56,7 +56,6 @@ Make sure the CURRENT project is on "demo".
 
 
 1. Click the "Instances" link on the left, and click "Launch instance" at the top-right
-
    * Availability Zone: nova
    * Instance Name: test
    * Flavor: m1.tiny
@@ -64,7 +63,7 @@ Make sure the CURRENT project is on "demo".
    * Instance Boot Source: Boot from image.
    * Image Name: cirros-0.3.1-x86_64-uec (24.0 MB)
 
-    ![launch instance](launch-instance.png)
+   ![launch instance](launch-instance.png)
 
 1. Click "Access & Security"
 
