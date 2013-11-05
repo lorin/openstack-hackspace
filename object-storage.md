@@ -1,6 +1,6 @@
 # Object storage
 
-OpenStack Object Storage allows you to store files. Here we'll use Rackspace Cloud Files, which is built on top of OpenStack Object Storage. 
+OpenStack Object Storage allows you to store files. Here we'll use Rackspace Cloud Files, which is built on top of OpenStack Object Storage.
 
 ## Upload a file
 
@@ -11,12 +11,12 @@ Here we're going to upload a file into the "hackspace" container. We'll use an O
 
 Download the file [openstack-cloud-software-vertical-small.png] to your local machine:
 
-	$ wget http://www.openstack.org/assets/openstack-logo/openstack-cloud-software-vertical-small.png 
-	
+	$ wget http://www.openstack.org/assets/openstack-logo/openstack-cloud-software-vertical-small.png
+
 Now, upload this file to object store into a new container called "hackspace":
 
     $ swift upload hackspace openstack-cloud-software-vertical-small.png
-    
+
 The hackspace container should now appear:
 
     $ swift list
@@ -34,11 +34,11 @@ The contents of the container should be the file:
 Download the file from Openstack Object Storage to your local machine, giving it a different name (logo.png):
 
     $ swift download hackspace openstack-cloud-software-vertical-small.png --output logo.png
-    
+
 
 ## Make the file accessible via temporary url
 
-We'll generate a temporary url to allow others to access the `hackspace/openstack-cloud-softare-vertical-small.png` file. 
+We'll generate a temporary url to allow others to access the `hackspace/openstack-cloud-softare-vertical-small.png` file.
 
 First, we need to set a secret key on the account. Here we'll use `super-secret-key` as the key:
 
@@ -49,19 +49,19 @@ Next, we need to determine the full url of the object. For that, we need to get 
 
     $ curl -i -s $ST_AUTH -H X-Storage-User:$ST_USER -H X-Storage-Pass:$ST_KEY | grep X-Storage-Url
     X-Storage-Url: https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013
-    
+
 In our example here, the storage URL is:
  * `https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013`
- 
+
 The full URL for the object is:
  * `https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-softare-vertical-small.png`
 
 We can ensure this url works by making a HEAD request using an authentication token. First, retrieve an auth token:
 
 	$ curl -i -s $ST_AUTH -H X-Storage-User:$ST_USER -H X-Storage-Pass:$ST_KEY  | grep '^X-Auth-Token'
-	X-Auth-Token: fac73d71321c4fdbac95ed8a183ff384	
+	X-Auth-Token: fac73d71321c4fdbac95ed8a183ff384
 Next, make a HEAD request against the object url, passing the auth token, and specifying that curl print out headers (`-i`):
-	
+
 	$ curl -i -X HEAD -H X-Auth-Token:fac73d71321c4fdbac95ed8a183ff384 https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png
 	HTTP/1.1 200 OK
 	Content-Length: 6685
@@ -73,9 +73,9 @@ Next, make a HEAD request against the object url, passing the auth token, and sp
 	X-Object-Meta-Mtime: 1313113538.000000
 	X-Trans-Id: txc7d304c99e6447ec85cca-00527470f2iad3
 	Date: Sat, 02 Nov 2013 03:26:42 GMT
-	
-	
-Let's generate a temporary url that's good until Dec. 31, 2013 at 23:59:59. 
+
+
+Let's generate a temporary url that's good until Dec. 31, 2013 at 23:59:59.
 
 We need to write some Python code for this, we can do it directly in the Python interpreter. Note that we need the url path for generating the url. In the above case, it's `/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png`, but your account name will be different.
 
@@ -96,8 +96,8 @@ We need to write some Python code for this, we can do it directly in the Python 
 	s = 'https://{host}{path}?temp_url_sig={sig}&temp_url_expires={expires}'
 	url = s.format(host=host, path=path, sig=sig, expires=expires)
 	print(url)
-	
-	
+
+
 The URL should look something like:
 
 
@@ -119,7 +119,7 @@ Set the metadata on the hackspace container such that anybody can access the con
 
 Setting the access control list to allow read access and container listing from any referrer:
 
-    $ swift post hackspace --read-acl '.r:*,.rlistings' 
+    $ swift post hackspace --read-acl '.r:*'
 
 Verify it's been set:
 
