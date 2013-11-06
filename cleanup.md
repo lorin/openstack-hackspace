@@ -32,7 +32,7 @@ If there are, delete them:
 
 ## Images
 
-make sure there are no images you created remaining:
+Make sure there are no images you created remaining:
 
     $ nova image-list
 
