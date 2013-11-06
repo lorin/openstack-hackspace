@@ -153,6 +153,15 @@ format it and mount it as a drive.
     $ sudo mkfs.ext4 /dev/vdb
     $ sudo mount /dev/vdb /mnt
 
+## Prepare for under the hood exercises
+
+Exit the cirros instance:
+
+    $ exit
+
+For the rest of the exercises, make sure you are logged in to the Rackspace
+virtual machine instance ("devstack") when issuing the commands.
+
 Next exercise is the [Under the hood: compute].
 
  [Under the hood: compute]: under-the-hood-compute.md
