@@ -49,6 +49,10 @@ OpenStack launches a new virtual machine, it copies the image file to
 `/opt/stack/data/nova/instances/_base`, and then creates a new qcow2 image
 in the `/opt/stack/data/nova/instances/<instance id>` directory.
 
+Using the `file` command, you should be able to identify which is the original
+QCOW2 base image file that the disk image in `/opt/stack/data/nova/instances/<instance id>`
+is copied from.
+
 
 ## Database
 
