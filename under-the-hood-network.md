@@ -159,3 +159,12 @@ You can also see the rule for routing from the metadata service (`169.254.169.25
 ```
 -A neutron-l3-agent-PREROUTING -d 169.254.169.254/32 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 9697
 ```
+
+
+You've completed the exercises! You can also try [generating a temporary url]
+with object storage.
+
+Finally, please [clean up] so somebody else can use your account.
+
+[generating a temporary url]: temp-url.md
+[clean up]: cleanup.md
