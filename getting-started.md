@@ -15,14 +15,13 @@ You should have a Rackspace username and password. You'll be using these to acce
 5. Write down your API key.
 
 
-
 ### Install OpenStack command-line tools
 
 Install the OpenStack command-line tools on your local machine. It's best to install this within a Python virtualenv.
 
     $ virtualenv openstack
     $ source openstack/bin/activate
-    $ pip install rackspace-novaclient python-glanceclient python-cinderclient python-neutronclient python-swiftclient python-keystoneclient
+    $ pip install rackspace-novaclient python-swiftclient
 
 
 ### Create a valid openrc file for
@@ -36,26 +35,30 @@ Download the linked [rax.openrc] file, and fill in your username, account number
 
  Then edit the following lines
 
-    export OS_USERNAME=jane.doe
-    export OS_TENANT_NAME=12345
-    export OS_PASSWORD=1c3cdf47937c40faa9f7a8ba5efa5560
-    export OS_PROJECT_ID=12345
+```
+export OS_USERNAME=jane.doe
+export OS_TENANT_NAME=12345
+export OS_PASSWORD=1c3cdf47937c40faa9f7a8ba5efa5560
+export OS_PROJECT_ID=12345
+````
 
 And the entire rax.openrc file should now look like:
 
 
-    export OS_AUTH_URL=https://identity.api.rackspacecloud.com/v2.0/
-    export OS_AUTH_SYSTEM=rackspace
-    export OS_REGION_NAME=IAD
-    export OS_USERNAME=jane.doe
-    export OS_TENANT_NAME=12345
-    export OS_PASSWORD=1c3cdf47937c40faa9f7a8ba5efa5560
-    export OS_PROJECT_ID=12345
-    export OS_NO_CACHE=1
+```
+export OS_AUTH_URL=https://identity.api.rackspacecloud.com/v2.0/
+export OS_AUTH_SYSTEM=rackspace
+export OS_REGION_NAME=IAD
+export OS_USERNAME=jane.doe
+export OS_TENANT_NAME=12345
+export OS_PASSWORD=1c3cdf47937c40faa9f7a8ba5efa5560
+export OS_PROJECT_ID=12345
+export OS_NO_CACHE=1
 
-    export ST_AUTH=https://auth.api.rackspacecloud.com/v1.0
-    export ST_USER=$OS_USERNAME
-    export ST_KEY=$OS_PASSWORD
+export ST_AUTH=https://auth.api.rackspacecloud.com/v1.0
+export ST_USER=$OS_USERNAME
+export ST_KEY=$OS_PASSWORD
+```
 
 ### Confirm compute client is working
 
@@ -84,7 +87,7 @@ Make srue the OpenStack Object Storage client (swift) is working by checking the
 
     $ source rax.openrc
     $ swift stat
-    
+
 The output should look something like this:
 
 
