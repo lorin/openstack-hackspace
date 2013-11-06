@@ -36,7 +36,8 @@ to the virtual NIC (in the example above, `tapb5e2060e-02`).
 The name of the iptables chaian that controls the inbound rules for the instance
 with virtual NIC `tapb5e2060e-02` is called `neutron-openvswi-ib5e2060e-0`.
 
-See if you can identify the name of the chain for your instance and list the rules.
+Try to identify the name of the chain for your instance and list the rules. In
+the example above, it's:
 
 ```
 $ iptables -L neutron-openvswi-ib5e2060e-0
@@ -99,10 +100,10 @@ Try listing the Open vSwitch bridges, and the ports on each bridge:
     $ sudo ovs-vsctl list-ports br-int
     $ sudo ovs-vsctl list-ports br-ex
 
-You should be able to see ports that are attached to open vswitches even
+You should be able to see ports that are attached to Open vSwtich bridges even
 if they are inside of a network namespace.
 
-## DHCP
+## DHCP service
 
 The `qdhcp-` network namespace contains the interface where the DHCP server
 listens for DHCP requsests from instances.

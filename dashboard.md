@@ -131,7 +131,7 @@ You should see the following output:
     cirros@172.24.4.227's password:
     $
 
-## Create and  attach a volume
+## Create and attach a volume
 
 In the dashboard:
 
@@ -158,6 +158,21 @@ format it and mount it as a drive.
 Exit the cirros instance:
 
     $ exit
+
+
+## Add a file to object store
+
+In the dashboard:
+
+1. Click "Containers" at the left
+1. Click the "Create Container"  button
+1. Name it "mycontainer"
+1. Click the "Upload Object" button
+1. Set Object Name: logo.png, click "Browse..." and choose the Openstack logo file downloaded earlier.
+1. Click "Upload Object" button.
+
+The "logo.png" file should appear in the dashboard.
+
 
 For the rest of the exercises, make sure you are logged in to the Rackspace
 virtual machine instance ("devstack") when issuing the commands.
