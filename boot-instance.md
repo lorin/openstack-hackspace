@@ -115,7 +115,7 @@ List the available images:
 	+--------------------------------------+----------------------------------------------------------------------------------------------+--------+--------+
 
 
-We're going to use flavor `2` (512 MB Standard Instance), and image `25de7af5-1668-46fb-bd08-9974b63a4806` (Ubuntu 12.04).
+We're going to use flavor `2` (512 MB Standard Instance), and image `c3153cde-2d23-4186-b7da-159adbe2858b` (Ubuntu 12.04).
 
 
 We'll call this instance `web`, and specify that it should be on the `hackspace` network we created, with IP address 10.30.0.5.
@@ -123,7 +123,7 @@ We'll call this instance `web`, and specify that it should be on the `hackspace`
 We will use the `--no-service-net` argument so that our instance does not get connected to the private network.
 
 
-	$ nova boot --flavor 2 --image 25de7af5-1668-46fb-bd08-9974b63a4806 --key-name lisa --nic net-id=5593dd67-feb4-4382-be86-1b9169ecde65,v4-fixed-ip=10.30.0.5 web  --no-service-net
+	$ nova boot --flavor 2 --image c3153cde-2d23-4186-b7da-159adbe2858b --key-name lisa --nic net-id=5593dd67-feb4-4382-be86-1b9169ecde65,v4-fixed-ip=10.30.0.5 web  --no-service-net
 
 Initial output should look like this:
 
