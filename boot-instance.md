@@ -9,11 +9,11 @@ First thing we need to do is create a new ssh keypair so that we can ssh to our 
 We'll call our key "lisa":
 
     $ nova keypair-add lisa > lisa.key
-    
+
 We also need to set permissions on it otherwise ssh won't let us use it.
-    
+
     $ chmod 0600 lisa.key
-   
+
 
 
 ## Networking
@@ -31,7 +31,7 @@ You should have a private and public network visible in your account:
 
 We're going to create a new 10.30.0.0/24 network, which we'll call `hackspace`.
 
-	
+
 	$ nova network-create hackspace 10.30.0.0/24
 	+----------+--------------------------------------+
 	| Property | Value                                |
@@ -40,7 +40,7 @@ We're going to create a new 10.30.0.0/24 network, which we'll call `hackspace`.
 	| id       | 5593dd67-feb4-4382-be86-1b9169ecde65 |
 	| label    | hackspace                            |
 	+----------+--------------------------------------+
-	
+
 It should now show up in a list of networks:
 
 	$ nova network-list
@@ -51,9 +51,9 @@ It should now show up in a list of networks:
 	| 00000000-0000-0000-0000-000000000000 | public    |              |
 	| 11111111-1111-1111-1111-111111111111 | private   |              |
 	+--------------------------------------+-----------+--------------+
-	
+
 ## Booting a new instance
-	
+
 Now we're going to boot an Ubuntu 12.04 instance into this network. List the available instance sizes, which OpenStack calls flavors:
 
 	$ nova flavor-list
@@ -67,9 +67,9 @@ Now we're going to boot an Ubuntu 12.04 instance into this network. List the ava
 	| 6  | 8GB Standard Instance   | 8192      | 320  | 0         | 2048 | 4     | 600.0       | N/A       |
 	| 7  | 15GB Standard Instance  | 15360     | 620  | 0         | 2048 | 6     | 800.0       | N/A       |
 	| 8  | 30GB Standard Instance  | 30720     | 1200 | 0         | 2048 | 8     | 1200.0      | N/A       |
-	+----+-------------------------+-----------+------+-----------+------+-------+-------------+-----------+    
+	+----+-------------------------+-----------+------+-----------+------+-------+-------------+-----------+
 
-List the available images: 
+List the available images:
 
 	$ nova image-list
 	+--------------------------------------+----------------------------------------------------------------------------------------------+--------+--------+
@@ -121,7 +121,7 @@ We will use the `--no-service-net` argument so that our instance does not get co
 
 
 	$ nova boot --flavor 2 --image 25de7af5-1668-46fb-bd08-9974b63a4806 --key-name lisa --nic net-id=5593dd67-feb4-4382-be86-1b9169ecde65,v4-fixed-ip=10.30.0.5 web  --no-service-net
-	
+
 Initial output should look like this:
 
 	+------------------------+--------------------------------------+
@@ -157,7 +157,7 @@ The `nova list` command will give you information about the status.
 	+--------------------------------------+------+--------+------------+-------------+-------------------------------------------------------------------------------------+
 	| 659fe85d-a59d-4e04-9785-e2942eea1f1b | web  | BUILD  | spawning   | NOSTATE     | hackspace=10.30.0.2; public=162.209.109.95, 2001:4802:7800:0002:1b1e:746f:ff20:0b7a |
 	+--------------------------------------+------+--------+------------+-------------+-------------------------------------------------------------------------------------+
-	
+
 Eventually, the stauts will become `ACTIVE`:
 
 	+--------------------------------------+------+--------+------------+-------------+-------------------------------------------------------------------------------------+
@@ -172,28 +172,28 @@ Once active, you will be able to ssh as root using the lisa.key private key file
 	$ ssh -i lisa.key root@162.209.109.95
 	Warning: Permanently added '162.209.109.95' (RSA) to the list of known hosts.
 	Welcome to Ubuntu 12.04.3 LTS (GNU/Linux 3.2.0-53-virtual x86_64)
-	
+
 	 * Documentation:  https://help.ubuntu.com/
-	
+
 	  System information as of Sat Nov  2 02:08:45 UTC 2013
-	
+
 	  System load:  0.08              Processes:           64
 	  Usage of /:   4.9% of 19.68GB   Users logged in:     0
 	  Memory usage: 10%               IP address for eth0: 162.209.109.95
 	  Swap usage:   0%                IP address for eth1: 10.30.0.2
-	
+
 	  Graph this data and manage this system at https://landscape.canonical.com/
-	
-	
+
+
 	The programs included with the Ubuntu system are free software;
 	the exact distribution terms for each program are described in the
 	individual files in /usr/share/doc/*/copyright.
-	
+
 	Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
 	applicable law.
-	
+
 	root@web:~#
-	
+
 Note that there are two interfaces, eth0 has IP address 162.209.109.95 and is on the `public` network and eth1 has IP address 10.30.0.2 and is on the `hackspace` network.
 
 Don't forget to log out of the instance:
@@ -202,7 +202,7 @@ Don't forget to log out of the instance:
 	root@web:~# exit
 	logout
 	Connection to 162.209.109.95 closed.
-	
+
 ## Attaching a volume
 We're going to attach a 100 GB volume (block device) to our instance.
 
@@ -225,7 +225,7 @@ First, we create the 100GB volume:
 	| size                | 100                                  |
 	| id                  | 455ec395-cfab-4319-bbf0-1d061c14a7e8 |
 	| metadata            | {}                                   |
-	+---------------------+--------------------------------------+	
+	+---------------------+--------------------------------------+
 We should now be able to see it using `nova volume-list`
 
 	$ nova volume-list
@@ -246,7 +246,7 @@ We're going to attach this to our `web` instance. We'll use the "auto"  argument
 	| id       | 455ec395-cfab-4319-bbf0-1d061c14a7e8 |
 	| volumeId | 455ec395-cfab-4319-bbf0-1d061c14a7e8 |
 	+----------+--------------------------------------+
-	
+
 Here we format that volume as an ext4 file system and then mount it as /mnt/vol:
 
 	root@web:~# mkfs.ext4 /dev/xvdb
@@ -266,12 +266,12 @@ Here we format that volume as an ext4 file system and then mount it as /mnt/vol:
 	Superblock backups stored on blocks:
 		32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,
 		4096000, 7962624, 11239424, 20480000, 23887872
-	
+
 	Allocating group tables: done
 	Writing inode tables: done
 	Creating journal (32768 blocks): done
 	Writing superblocks and filesystem accounting information: done
-	
+
 	root@web:~# mkdir /mnt/vol
 	root@web:~# mount /dev/xvdb /mnt/vol
 
@@ -287,14 +287,22 @@ We can also unmount it and then detach it from the instance:
 	root@web:~# exit
 	logout
 	Connection to 162.209.109.95 closed.
-	$ nova volume-detach web 455ec395-cfab-4319-bbf0-1d061c14a7e8	
+	$ nova volume-detach web 455ec395-cfab-4319-bbf0-1d061c14a7e8
 
 The volume still exists, and if we had stored any files on it, those files would persist until we deleted the volume:
 
 	$ nova volume-delete 455ec395-cfab-4319-bbf0-1d061c14a7e8
-	
+
 
 # Capture an instance to an image
+
+You can capture a running instance to an image, which you can deploy later.
+
+
+	$ nova image-create web web-snapshot
+
+It will take a while to snapshot the instance to an image. You can check
+the status:
 
 
 	$ nova image-show web-snapshot
@@ -346,3 +354,8 @@ The volume still exists, and if we had stored any files on it, those files would
 	| metadata com.rackspace__1__source              | kickstart                                                                                                                                                                                                                                                       |
 	| metadata instance_type_ephemeral_gb            | 0                                                                                                                                                                                                                                                               |
 	+------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+Next exercise is [object storage].
+
+[object storage]: object-storage.md
+
