@@ -1,5 +1,8 @@
 # Dashboard
 
+In this exercise, you will use the OpenStack Dashboard to create a new security
+group, start an instance, attach a floating IP, and attach a volume.
+
 You should now be able to access the dashboard by pointing your web browser
 at the public IP of your instance.
 
@@ -88,7 +91,7 @@ By default, OpenStack instances aren't reachable without a floating IP.
 
 1. At the "Instances" view, click "More" under Actions and choose "Associate
 floating IP".
-
+tw
     ![associate floating ip](menu-associate-floating-ip.png)
 
 1. Click the "+" next to "No IP addresses available" to alllocate a new
@@ -147,3 +150,6 @@ format it and mount it, as before:
     $ sudo mkfs.ext4 /dev/vdb
     $ sudo mount /dev/vdb /mnt
 
+Next exercise is the [Under the hood: compute].
+
+ [Under the hood: compute]: under-the-hood-compute.md
