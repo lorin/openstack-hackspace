@@ -79,30 +79,39 @@ Let's generate a temporary url that's good until Dec. 31, 2013 at 23:59:59.
 
 We need to write some Python code for this, we can do it directly in the Python interpreter. Note that we need the url path for generating the url. In the above case, it's `/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png`, but your account name will be different.
 
+Save this to a file and run it:
 
-	import hmac
-	from hashlib import sha1
-	import time
-	from datetime import datetime
-	d = datetime(2013, 12, 31, 23, 59, 59)
-	expires = int(time.mktime(d.timetuple()))
-	host = "storage101.iad3.clouddrive.com"
-	# Note: your account will be different here
-	account = "MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013"
-	path = "/v1/{0}/hackspace/openstack-cloud-software-vertical-small.png".format(account)
-	key = 'super-secret-key'
-	hmac_body = 'GET\n{0}\n{1}'.format(expires, path)
-	sig = hmac.new(key, hmac_body, sha1).hexdigest()
-	s = 'https://{host}{path}?temp_url_sig={sig}&temp_url_expires={expires}'
-	url = s.format(host=host, path=path, sig=sig, expires=expires)
-	print(url)
+```
+#!/usr/bin/env python
+import hmac
+import time
+from hashlib import sha1
+from datetime import datetime
 
+
+# Note: your account will be different here,change this
+account = "MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013"
+# You may need to change this
+host = "storage101.iad3.clouddrive.com"
+
+
+d = datetime(2013, 12, 31, 23, 59, 59)
+expires = int(time.mktime(d.timetuple()))
+path = "/v1/{0}/hackspace/openstack-cloud-software-vertical-small.png".format(account)
+key = 'super-secret-key'
+hmac_body = 'GET\n{0}\n{1}'.format(expires, path)
+sig = hmac.new(key, hmac_body, sha1).hexdigest()
+s = 'https://{host}{path}?temp_url_sig={sig}&temp_url_expires={expires}'
+url = s.format(host=host, path=path, sig=sig, expires=expires)
+print(url)
+```
 
 The URL should look something like:
 
 
 `https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png?temp_url_sig=ad1cad4ee2856c0a566636678e5ce023e84a577a&temp_url_expires=1388552399`
 
-This special url can be used to read the file until the expiry date.
+This special url can be used to read the file until the expiry date. You
+should be able to acess the url in your browse.
 
 
