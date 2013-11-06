@@ -27,6 +27,9 @@ and ping (icmp) traffic.
 
 1. Click "Create Security Group"
 
+  It may take a few seconds, but eventually the new security group will
+  appear in the Security Groups table.
+
 1. Click "Edit Rules" on the "ssh" Security group
 
 1. Click "Add Rule"
@@ -145,7 +148,7 @@ When the volume status becomes "Available":
 1. Click "Attach Volume"
 
 Inside of your cirros instance, you should now see a /dev/vdb device. You can
-format it and mount it, as before:
+format it and mount it as a drive.
 
     $ sudo mkfs.ext4 /dev/vdb
     $ sudo mount /dev/vdb /mnt
