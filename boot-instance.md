@@ -294,7 +294,7 @@ The volume still exists, and if we had stored any files on it, those files would
 	$ nova volume-delete 455ec395-cfab-4319-bbf0-1d061c14a7e8
 
 
-# Capture an instance to an image
+## Capture an instance to an image
 
 You can capture a running instance to an image, which you can deploy later.
 
