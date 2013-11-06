@@ -33,8 +33,7 @@ Talk to somebody in the room if you don't have these.
  * [Under the hood: compute][6]
  * [Under the hood: volumes][7]
  * [Under the hood: networking][8]
- * [Under the hood: object storage][9]
- * [Cleanup][10]
+ * [Cleanup][9]
 
 
  [1]: getting-started.md
@@ -45,5 +44,4 @@ Talk to somebody in the room if you don't have these.
  [6]: under-the-hood-compute.md
  [7]: under-the-hood-volumes.md
  [8]: under-the-hood-network.md
- [9]: under-the-hood-object.md
- [10]: cleanup.md
+ [9]: cleanup.md
