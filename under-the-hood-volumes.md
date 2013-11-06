@@ -9,9 +9,11 @@ You should have one volume attached to your instance:
     | 16150e7c-92b1-4bfd-a425-450bf4de6f36 | in-use |   myvolume   |  1   |     None    |  false   | 291574d9-7445-4231-b248-bafbf3b116ec |
     +--------------------------------------+--------+--------------+------+-------------+----------+--------------------------------------+
 
-The default DevStack configuration uses LVM to implement volumes.
+## LVM
 
-DevStack uses a volume group caled `stack-volumes`:
+The default DevStack configuration uses LVM to implement volumes. DevStack
+uses an LVM volume group caled `stack-volumes`, which you can list using the
+`vgs` command:
 
     $ sudo vgs
       VG            #PV #LV #SN Attr   VSize  VFree
@@ -48,3 +50,24 @@ that is exposed as a loop device. Try running the following commands:
 
 In a production OpenStack production that used LVM, the physical volumes
 would be actually disk partitions instead of files mounted as loopback devices.
+
+
+# iscsi
+
+OpenStack uses iSCSI to allow virtual machines to connect to LVM volumes on
+remote systems.
+
+In a DevStack deployment, the same system is both the iSCSI server and iSCSI
+client. In a production environment the LVM volumes would be located on a
+different physical machine than the one running the hypervisor.
+
+Try running the following command to view information about volumes that
+are being exported over iSCSI.
+
+    $ sudo tgtadm --lld iscsi --op show --mode target
+
+
+
+The next exercise is [Under the hood: networking].
+
+[Under the hood: networking]: under-the-hood-network.md
