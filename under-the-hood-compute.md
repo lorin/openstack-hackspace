@@ -69,3 +69,6 @@ instance is running on:
     +--------------------------------------+----------+----------+----------+
 
 
+The next exercise is [Under the hood: network].
+
+[Under the hood: network]: under-the-hood-network.md
