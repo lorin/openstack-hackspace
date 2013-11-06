@@ -1,6 +1,9 @@
 # Compute
 
-Here we're going to boot an instance and attach a volume. We'll be using Rackspace Cloud Servers, which is implemented on top of OpenStack.
+Here we're going to create a network, boot an instance onto that network, attach a volume onto
+that instance, and then snapshot the instance into an image.
+
+We'll be using Rackspace Public Cloud, which is implemented on top of OpenStack.
 
 ## Add a keypair
 
