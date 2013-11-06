@@ -83,7 +83,7 @@ The output should look something like this:
 
 ### Confirm object storage client is working
 
-Make srue the OpenStack Object Storage client (swift) is working by checking the status of your object storage account:
+Make sure the OpenStack Object Storage client (swift) is working by checking the status of your object storage account:
 
     $ source rax.openrc
     $ swift stat
