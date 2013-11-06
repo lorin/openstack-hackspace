@@ -69,6 +69,6 @@ instance is running on:
     +--------------------------------------+----------+----------+----------+
 
 
-The next exercise is [Under the hood: network].
+The next exercise is [Under the hood: volumes].
 
-[Under the hood: network]: under-the-hood-network.md
+[Under the hood: volumes]: under-the-hood-volumes.md
