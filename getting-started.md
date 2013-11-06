@@ -100,7 +100,7 @@ The output should look something like this:
 	X-Trans-Id: txf8f114e6ecac49db9c5e0-00527463cfiad3
 	X-Put-Timestamp: 1383359439.45298
 
-Next exercise is [Booting an instance].
+Next exercise is [compute].
 
 [rax.openrc]: https://github.com/lorin/openstack-hackspace/blob/master/rax.openrc
-[Booting an instance]: boot-instance.md
+[compute]: boot-instance.md

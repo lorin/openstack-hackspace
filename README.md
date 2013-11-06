@@ -26,7 +26,7 @@ Talk to somebody in the room if you don't have these.
 ## Exercises
 
  * [Getting started][1]
- * [Booting an instance][2]
+ * [Compute][2]
  * [Object storage][3]
  * [DevStack][4]
  * [Dashboard][5]

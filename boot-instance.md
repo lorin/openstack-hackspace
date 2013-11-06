@@ -1,4 +1,4 @@
-# Booting an instance
+# Compute
 
 Here we're going to boot an instance and attach a volume. We'll be using Rackspace Cloud Servers, which is implemented on top of OpenStack.
 
