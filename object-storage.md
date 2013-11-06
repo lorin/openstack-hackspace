@@ -20,11 +20,17 @@ Now, upload this file to object store into a new container called "hackspace":
 The hackspace container should now appear:
 
     $ swift list
+
+Output should look like:
+
     hackspace
 
 The contents of the container should be the file:
 
 	$ swift list hackspace
+
+Output should look like:
+
 	openstack-cloud-software-vertical-small.png
 
 [openstack-cloud-software-vertical-small.png]: http://www.openstack.org/assets/openstack-logo/openstack-cloud-software-vertical-small.png
@@ -48,6 +54,9 @@ First, we need to set a secret key on the account. Here we'll use `super-secret-
 Next, we need to determine the full url of the object. For that, we need to get the storage url. We need to query the REST API directly for that:
 
     $ curl -i -s $ST_AUTH -H X-Storage-User:$ST_USER -H X-Storage-Pass:$ST_KEY | grep X-Storage-Url
+
+Output should look like:
+
     X-Storage-Url: https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013
 
 In our example here, the storage URL is:
@@ -59,10 +68,16 @@ The full URL for the object is:
 We can ensure this url works by making a HEAD request using an authentication token. First, retrieve an auth token:
 
 	$ curl -i -s $ST_AUTH -H X-Storage-User:$ST_USER -H X-Storage-Pass:$ST_KEY  | grep '^X-Auth-Token'
+
+Output should look like:
+
 	X-Auth-Token: fac73d71321c4fdbac95ed8a183ff384
 Next, make a HEAD request against the object url, passing the auth token, and specifying that curl print out headers (`-i`):
 
 	$ curl -i -X HEAD -H X-Auth-Token:fac73d71321c4fdbac95ed8a183ff384 https://storage101.iad3.clouddrive.com/v1/MossoCloudFS_4911155b-84c6-448b-b0f3-7db8f4887013/hackspace/openstack-cloud-software-vertical-small.png
+
+Output should look like:
+
 	HTTP/1.1 200 OK
 	Content-Length: 6685
 	Content-Type: image/png
