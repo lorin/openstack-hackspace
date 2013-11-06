@@ -153,8 +153,6 @@ format it and mount it as a drive.
     $ sudo mkfs.ext4 /dev/vdb
     $ sudo mount /dev/vdb /mnt
 
-## Prepare for under the hood exercises
-
 Exit the cirros instance:
 
     $ exit
