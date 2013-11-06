@@ -1,5 +1,12 @@
 # OpenStack Hackspace
 
+## What you'll be doing
+
+ * Interacting with a production OpenStack deployment (Rackspace Public Cloud) using command-line tools
+ * Doing your own deployment of OpenStack (DevStack) inside of the Rackspace cloud
+ * Interacting with your OpenStack deployment using a web dashboard
+ * Poking around your deployment to understand how OpenStack is implemented
+
 ## What you need
 
 This document assumes you have:
