@@ -2,21 +2,70 @@
 
 The networking is the most complex aspect of OpenStack. When you are running
 one virtual machine with a floating IP attached, your current DevStack
-deployment should have networking that looks something like this:
+deployment should have networking that has several virtual network interfaces
+(tap devices, veth pairs, Linux bridges, Open vSwitch bridges).
 
-![networking](network-under-hood.png)
-
-
+![Network devices](network-under-hood.png)
 
 Note that the exact name of the networking devices will vary, although the
 prefixes (`tap`, `qbr`, `qvb`, `qvo`, `qr-`, `qg-`, `br`) will be the same.
+
+
+All devices attached directly to Open vSwitch bridges are "internal ports",
+which are implemented as tap devices.
 
 
 You can list network interfaces by doing:
 
     $ ip a
 
-Note that not all of them will appear, because of network namespaces.
+Note that not all of the network interfaces will appear in the list, because
+some are in different network namespaces.
+
+
+Also note that `eth0`, `eth1`, and `virbr0` are not involved here. In a production
+deployment, the br-ex bridge would be connected to a physical interface
+such as eth0.  The `virbr0` bridge is a bridge created by libvirt that is
+not used by OpenStack.
+
+## Security groups
+
+OpenStack uses iptables to implement security groups. The rules are applied
+to the virtual NIC (in the example above, `tapb5e2060e-02`).
+
+The name of the iptables chaian that controls the inbound rules for the instance
+with virtual NIC `tapb5e2060e-02` is called `neutron-openvswi-ib5e2060e-0`.
+
+See if you can identify the name of the chain for your instance and list the rules.
+
+```
+$ iptables -L neutron-openvswi-ib5e2060e-0
+Chain neutron-openvswi-ib5e2060e-0 (1 references)
+target     prot opt source               destination
+DROP       all  --  anywhere             anywhere             state INVALID
+RETURN     all  --  anywhere             anywhere             state RELATED,ESTABLISHED
+RETURN     tcp  --  anywhere             anywhere             tcp dpt:ssh
+RETURN     icmp --  anywhere             anywhere
+RETURN     udp  --  10.0.0.2             anywhere             udp spt:bootps dpt:bootpc
+neutron-openvswi-sg-fallback  all  --  anywhere             anywhere
+```
+
+Recall that we specified inbound traffic allowed on tcp port 22, and icmp.
+
+This rule allows the tcp inbound connections on the ssh port (22):
+
+    RETURN     tcp  --  anywhere             anywhere             tcp dpt:ssh
+
+This rule allows the inbound traffic
+
+    RETURN     icmp --  anywhere             anywhere
+
+Ideally, the virtual NIC would connect directly to the `br-int` Open vSwitch
+bridge. Unfortunately, due to an incompatibility between Open vSwitch and
+iptables, it is necessary to add a Linux bridge and a veth pair as a workaround
+to provide the L2 connectivity between the virtual NIC and `br-int`, while
+still having iptables rules apply to the virtual NIC interface.
+
 
 ## Network namespaces
 
@@ -42,107 +91,70 @@ As we'll see, you can also run an arbitrary commands inside of a network
 namespace using `ip netns exec <namespace> <command>`.
 
 
+## Open vSwith bridges
+
+Try listing the Open vSwitch bridges, and the ports on each bridge:
+
+    $ sudo ovs-vsctl list-br
+    $ sudo ovs-vsctl list-ports br-int
+    $ sudo ovs-vsctl list-ports br-ex
+
+You should be able to see ports that are attached to open vswitches even
+if they are inside of a network namespace.
+
 ## DHCP
 
-The `qdhcp-` network namespace is where the DHCP server runs. OpenStack
-uses dnsmasq for the networking.
+The `qdhcp-` network namespace contains the interface where the DHCP server
+listens for DHCP requsests from instances.
 
 There should be a `tap` device inside of the qdhcp- namespace. If you
 execute the `ip a` command inside of the namespace, it will list all of the
+networking devices.
 
     $ sudo ip netns exec qdhcp-4b523b2a-5921-4e8b-9e64-7b668c4aab85 ip a
 
+OpenStack uses dnsmasq for the networking. Ensure the dnsmasq service is
+lsitening on the appropriate `tap` device by doing:
+
+    $ ps ww `pgrep dnsmasq`
+
+Look for the `--interface` argument to determine which interface it is listening
+on..
 
 
+## Routing and floating IPs
+
+Layer 3 routing and floating IPs are implemented inside of the `qrouter-`
+namespace.
+
+The `qg-` network interface will have its own IP address, and will also be
+assigned an IP address for each floating IP.
+
+Look at how the routing is configured between the OpenStack private network (10.0.0.0/24)
+and the OpenStack public network (172.24.2.)
+
+   $ sudo ip netns exec qrouter-9e5f2802-2462-4f5c-a95b-c60b99744451 ip route show
 
 
-## Routing
+Floating IPs are implemented using iptables rules for doing network address
+translation.
 
-   $ sudo ip netns exec qrouter-9e5f2802-2462-4f5c-a95b-c60b99744451 route -n
-
-## Floating IPs
-
-
-## Security groups
-
-You can see the rules that allow tcp connections destined for the ssh port
-(port 22) and icmp inbound.
+Look at the rules for the `nat` inside of your `qrouter` namespace
 
 
-```
-$ iptables -L neutron-openvswi-ib5e2060e-0
-Chain neutron-openvswi-ib5e2060e-0 (1 references)
-target     prot opt source               destination
-DROP       all  --  anywhere             anywhere             state INVALID
-RETURN     all  --  anywhere             anywhere             state RELATED,ESTABLISHED
-RETURN     tcp  --  anywhere             anywhere             tcp dpt:ssh
-RETURN     icmp --  anywhere             anywhere
-RETURN     udp  --  10.0.0.2             anywhere             udp spt:bootps dpt:bootpc
-neutron-openvswi-sg-fallback  all  --  anywhere             anywhere
-```
+    $ sudo ip netns exec qrouter-9e5f2802-2462-4f5c-a95b-c60b99744451 iptables -t nat -S
 
 
-List the ports on the internal bridge:
-
-    # ovs-vsctl list-ports br-int
-    qr-0d5ea29d-36
-    qvob5e2060e-02
-    tap1b197b45-16
-
-
-List the ports on the external bridge:
-
-    # ovs-vsctl list-ports br-ex
-    qg-411a1cf8-f4
-
-
+You should see commands for doing the NAT from 172.24.4.227 to 10.0.0.3, such as:
 
 ```
-# ip netns list
-qrouter-9e5f2802-2462-4f5c-a95b-c60b99744451
-qdhcp-4b523b2a-5921-4e8b-9e64-7b668c4aab85
+-A neutron-l3-agent-OUTPUT -d 172.24.4.227/32 -j DNAT --to-destination 10.0.0.3
+...
+-A neutron-l3-agent-float-snat -s 10.0.0.3/32 -j SNAT --to-source 172.24.4.227
 ```
 
+You can also see the rule for routing from the metadata service (`169.254.169.254`):
 
 ```
-# ip netns exec qdhcp-4b523b2a-5921-4e8b-9e64-7b668c4aab85 ip a
-9: tap1b197b45-16: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN
-    link/ether fa:16:3e:97:78:bd brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.2/24 brd 10.0.0.255 scope global tap1b197b45-16
-    inet6 fe80::f816:3eff:fe97:78bd/64 scope link
-       valid_lft forever preferred_lft forever
-10: lo: <LOOPBACK,UP,LOWER_UP> mtu 16436 qdisc noqueue state UNKNOWN
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-```
-
-```
-# ip netns exec qrouter-9e5f2802-2462-4f5c-a95b-c60b99744451 ip a
-11: lo: <LOOPBACK,UP,LOWER_UP> mtu 16436 qdisc noqueue state UNKNOWN
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-    inet6 ::1/128 scope host
-       valid_lft forever preferred_lft forever
-12: qr-0d5ea29d-36: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN
-    link/ether fa:16:3e:dc:c5:47 brd ff:ff:ff:ff:ff:ff
-    inet 10.0.0.1/24 brd 10.0.0.255 scope global qr-0d5ea29d-36
-    inet6 fe80::f816:3eff:fedc:c547/64 scope link
-       valid_lft forever preferred_lft forever
-13: qg-411a1cf8-f4: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN
-    link/ether fa:16:3e:9c:fe:64 brd ff:ff:ff:ff:ff:ff
-    inet 172.24.4.226/28 brd 172.24.4.239 scope global qg-411a1cf8-f4
-    inet 172.24.4.227/32 brd 172.24.4.227 scope global qg-411a1cf8-f4
-    inet6 fe80::f816:3eff:fe9c:fe64/64 scope link
-       valid_lft forever preferred_lft forever
-```
-
-
-## DHCP
-
-```
-# ps ww `pgrep dnsmasq`
-  PID TTY      STAT   TIME COMMAND
- 1585 ?        S      0:00 dnsmasq --no-hosts --no-resolv --strict-order --bind-interfaces --interface=tap1b197b45-16 --except-interface=lo --pid-file=/opt/stack/data/neutron/dhcp/4b523b2a-5921-4e8b-9e64-7b668c4aab85/pid --dhcp-hostsfile=/opt/stack/data/neutron/dhcp/4b523b2a-5921-4e8b-9e64-7b668c4aab85/host --dhcp-optsfile=/opt/stack/data/neutron/dhcp/4b523b2a-5921-4e8b-9e64-7b668c4aab85/opts --leasefile-ro --dhcp-range=set:tag0,10.0.0.0,static,86400s --dhcp-lease-max=256 --conf-file= --domain=openstacklocal
+-A neutron-l3-agent-PREROUTING -d 169.254.169.254/32 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 9697
 ```
