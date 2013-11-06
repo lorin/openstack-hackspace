@@ -107,7 +107,6 @@ enable_service q-meta
 enable_service neutron
 
 # Use Neutron for security groups
-#
 LIBVIRT_FIREWALL_DRIVER=nova.virt.firewall.NoopFirewallDriver
 Q_USE_SECGROUP=True
 
