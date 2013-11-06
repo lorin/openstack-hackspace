@@ -55,9 +55,8 @@ If the IP address is 162.209.96.154, ssh by doing:
 
 ## Install git
 
-Once inside the instance, update the apt cache and install git:
+Once inside the instance, install git:
 
-    # apt-get update
     # apt-get install -y git
 
 ## Grab DevStack
@@ -68,7 +67,8 @@ Grab DevStack and switch to the stable/havana branch:
 
 ## Create a "stack" user
 
-DevStack can't run as root, so create a "stack" user like this:
+DevStack can't run as root, so create a "stack" user using the script that
+comes with DevStack:
 
     # chmod +x /root/devstack/tools/create-stack-user.sh
     # /root/devstack/tools/create-stack-user.sh
@@ -105,6 +105,11 @@ enable_service q-dhcp
 enable_service q-l3
 enable_service q-meta
 enable_service neutron
+
+# Use Neutron for security groups
+#
+LIBVIRT_FIREWALL_DRIVER=nova.virt.firewall.NoopFirewallDriver
+Q_USE_SECGROUP=True
 
 # Enable Swift
 enable_service s-proxy
