@@ -41,10 +41,10 @@ Note how the the volume name `volume-16150e7c-92b1-4bfd-a425-450bf4de6f36`
 matches the OpenStack volume ID `16150e7c-92b1-4bfd-a425-450bf4de6f36`.
 
 
-In a DevStack deployment, the physical volumes are backed by a file `/opt/stack/data/stack-volumes/backing-file`
+In a DevStack deployment, the physical volumes are backed by a file `/opt/stack/data/stack-volumes-backing-file`
 that is exposed as a loop device. Try running the following commands:
 
-    $ file /opt/stack/data/stack-volumes/backing-file
+    $ file /opt/stack/data/stack-volumes-backing-file
     $ sudo losetup -a
 
 
